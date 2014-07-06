@@ -13,7 +13,7 @@ doc.geometry.rectmidpoint = {"geometry.rectmidpoint(r) -> point", "Returns the m
 function geometry.rectmidpoint(r)
   return {
     x = r.x + r.w * 0.5,
-    y = -r.y + r.h * 0.5,
+    y = r.y + r.h * 0.5,
   }
 end
 
