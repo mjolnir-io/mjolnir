@@ -198,10 +198,26 @@
 
 <p>If you only have <code>~/.hydra/init.lua</code>, you can skip this section. But if you want to extract code into new files under <code>~/.hydra/</code> or put extensions there, there&#39;s a bit you should know first:</p>
 
-<p>The directory <code>~/.hydra/</code> is on the require-path, so if you do <code>require &quot;grid&quot;</code> then it will look for <code>~/.hydra/grid.lua</code> and load it if found. But <code>require</code> caches its modules by name, so requiring the same module twice will do nothing! If you don&#39;t want caching behavior, use <code>dofile</code> instead:</p>
+<p>The directory <code>~/.hydra/</code> is on the require-path, so if you do <code>require &quot;grid&quot;</code> then it will look for <code>~/.hydra/grid.lua</code> and load it if found. </p>
 
-<pre lang="lua"><code>require &quot;grid&quot;                                   -- caches &quot;grid&quot; module
-dofile(package.searchpath(&quot;grid&quot;, package.path)) -- doesn&#39;t cache &quot;grid&quot; module
+<h3>Caching</h3>
+
+<p>But <code>require</code> caches its modules by name, so requiring the same module twice will do nothing!</p>
+
+<pre lang="lua"><code>require &quot;grid&quot;               -- this caches &quot;grid&quot; module
+</code></pre>
+
+<p> If you don&#39;t want caching behavior, you can:</p> 
+
+<p>1. delete the module name from the built-in table <code>package.loaded</code> after the <code>require</code>:</p>
+
+<pre lang="lua"><code>require &quot;grid&quot;               -- this caches &quot;grid&quot; module
+package.loaded[&quot;grid&quot;] = nil           -- doesn&#39;t cache &quot;grid&quot; module
+</code></pre>
+
+
+<p>2. use <code>dofile</code> instead</p>
+<pre lang="lua"><code>dofile(package.searchpath(&quot;grid&quot;, package.path)) -- doesn&#39;t cache &quot;grid&quot; module
 </code></pre>
 
 <h3>Where to begin</h3>
