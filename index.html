@@ -204,12 +204,21 @@
 
 <p>But <code>require</code> caches its modules by name, so requiring the same module twice will do nothing!</p>
 
-<p> If you don&#39;t want caching behavior, delete the module name from the built-in table <code>package.loaded</code> instead:</p>
+<pre lang="lua"><code>require &quot;grid&quot;               -- this caches &quot;grid&quot; module
+</code></pre>
+
+<p> If you don&#39;t want caching behavior, you can:</p> 
+
+<p>1. delete the module name from the built-in table <code>package.loaded</code> after the <code>require</code>:</p>
 
 <pre lang="lua"><code>require &quot;grid&quot;               -- this caches &quot;grid&quot; module
 package.loaded[&quot;grid&quot;] = nil           -- doesn&#39;t cache &quot;grid&quot; module
 </code></pre>
 
+
+<p>2. use <code>dofile</code> instead</p>
+<pre lang="lua"><code>dofile(package.searchpath(&quot;grid&quot;, package.path)) -- doesn&#39;t cache &quot;grid&quot; module
+</code></pre>
 
 <h3>Where to begin</h3>
 
