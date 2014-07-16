@@ -104,6 +104,15 @@ static int hydra_putindock(lua_State* L) {
     return 0;
 }
 
+/// hydra.version() -> ?
+/// Return Hydra version
+static int hydra_version(lua_State* L) {
+    NSString* version = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleVersion"];
+
+    lua_pushstring(L, [version UTF8String]);
+    return 1;
+}
+
 static const luaL_Reg hydralib[] = {
     {"exit", hydra_exit},
     {"showabout", hydra_showabout},
@@ -113,6 +122,7 @@ static const luaL_Reg hydralib[] = {
     {"check_accessibility", hydra_check_accessibility},
     {"indock", hydra_indock},
     {"putindock", hydra_putindock},
+    {"version", hydra_version},
     {NULL, NULL}
 };
 
