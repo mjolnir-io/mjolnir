@@ -1,5 +1,7 @@
 local fallbackinit = {}
 
+pathwatcher.new(os.getenv("HOME") .. "/.hydra/", hydra.reload):start()
+
 function fallbackinit.open_sample_init()
   os.execute("open \"" .. hydra.resourcesdir .. "/sample_init.lua\"")
 end
