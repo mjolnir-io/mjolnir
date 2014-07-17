@@ -1,49 +1,63 @@
 #import "helpers.h"
 
-static const char* (^ipc_closure)(const char* str);
+static int ipcmod;
 
 CFDataRef ipc_callback(CFMessagePortRef local, SInt32 msgid, CFDataRef data, void *info) {
+    lua_State* L = (lua_State*) info;
+    
     CFStringRef instr = CFStringCreateFromExternalRepresentation(NULL, data, kCFStringEncodingUTF8);
     const char* cinstr = CFStringGetCStringPtr(instr, kCFStringEncodingUTF8);
-    const char* coutstr = ipc_closure(cinstr);
-    CFRelease(instr);
     
-    CFStringRef outstr = CFStringCreateWithCString(NULL, coutstr, kCFStringEncodingUTF8);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, ipcmod);
+    int stack_size = 0;
+    
+    lua_getfield(L, -1, "_handler");
+    stack_size++;
+    
+    lua_pushboolean(L, cinstr[0] == 'r');
+    lua_pushstring(L, cinstr+1);
+    
+    const char* result = "";
+    
+    if (lua_pcall(L, 2, 1, 0)) {
+        hydra_handle_error(L);
+    }
+    
+    else {
+        result = lua_tostring(L, -1);
+        stack_size++;
+    }
+    
+    CFStringRef outstr = CFStringCreateWithCString(NULL, result, kCFStringEncodingUTF8);
     CFDataRef outdata = CFStringCreateExternalRepresentation(NULL, outstr, kCFStringEncodingUTF8, 0);
+    
     CFRelease(outstr);
+    CFRelease(instr);
+    lua_pop(L, stack_size);
     
     return outdata;
 }
 
-// assumes the ipc table is pushed
-// leaves lua stack intact
-static void setup_ipc(lua_State* L) {
-    lua_pushvalue(L, -1);
-    int ipcmod = luaL_ref(L, LUA_REGISTRYINDEX);
-    ipc_closure = [^const char*(const char* cmd) {
-        lua_rawgeti(L, LUA_REGISTRYINDEX, ipcmod);
-        lua_getfield(L, -1, "_handler");
-        lua_pushboolean(L, cmd[0] == 'r');
-        lua_pushstring(L, cmd+1);
-        const char* result = "";
-        if (lua_pcall(L, 2, 1, 0)) {
-            hydra_handle_error(L);
-            lua_pop(L, 1); // ipcmod
-        }
-        else {
-            result = lua_tostring(L, -1);
-            lua_pop(L, 2); // return value and ipcmod
-        }
-        return result;
-    } copy];
+static void setup_ipc(lua_State *L) {
+    CFMessagePortContext context = {
+        .version = 0,
+        .release = NULL,
+        .retain = NULL,
+        .copyDescription = NULL,
+        .info = (void*) L
+    };
     
-    CFMessagePortRef messagePort = CFMessagePortCreateLocal(NULL, CFSTR("hydra"), ipc_callback, NULL, false);
+    CFMessagePortRef messagePort = CFMessagePortCreateLocal(NULL, CFSTR("hydra"), ipc_callback, &context, false);
     CFRunLoopSourceRef runloopSource = CFMessagePortCreateRunLoopSource(NULL, messagePort, 0);
     CFRunLoopAddSource(CFRunLoopGetMain(), runloopSource, kCFRunLoopCommonModes);
+    
 }
 
 int luaopen_ipc(lua_State* L) {
     lua_newtable(L);
+    lua_pushvalue(L, -1);
+    ipcmod = luaL_ref(L, LUA_REGISTRYINDEX);
+    
     setup_ipc(L);
     return 1;
 }
