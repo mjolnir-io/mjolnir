@@ -77,10 +77,7 @@ int main(int argc, char * argv[]) {
     }
     
     CFStringRef responseString = CFStringCreateFromExternalRepresentation(NULL, returnedData, kCFStringEncodingUTF8);
-    CFIndex responseLength = CFStringGetLength(responseString);
-    CFIndex maxSize = CFStringGetMaximumSizeForEncoding(responseLength, kCFStringEncodingUTF8);
-    char responseCString[maxSize];
-    CFStringGetCString(responseString, responseCString, maxSize, kCFStringEncodingUTF8);
+    const char* responseCString = CFStringGetCStringPtr(responseString, kCFStringEncodingUTF8);
     printf("%s\n", responseCString);
     
     return 0;
