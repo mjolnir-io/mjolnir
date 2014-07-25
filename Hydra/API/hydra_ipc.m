@@ -1,5 +1,7 @@
 #import "helpers.h"
 
+void PHShowAlert(NSString* oneLineMsg, CGFloat duration);
+
 CFDataRef ipc_callback(CFMessagePortRef local, SInt32 msgid, CFDataRef data, void *info) {
     lua_State* L = info;
     
@@ -49,8 +51,13 @@ static void setup_ipc(lua_State* L) {
     CFMessagePortContext ctx = {0};
     ctx.info = L;
     CFMessagePortRef messagePort = CFMessagePortCreateLocal(NULL, CFSTR("hydra"), ipc_callback, &ctx, false);
+    if (messagePort == NULL) {
+        PHShowAlert(@"Hydra could connect to the IPC channel.\nPlease make sure you close out any other Hydra instances that are running", 5.0);
+        return;
+    }
     CFRunLoopSourceRef runloopSource = CFMessagePortCreateRunLoopSource(NULL, messagePort, 0);
     CFRunLoopAddSource(CFRunLoopGetMain(), runloopSource, kCFRunLoopCommonModes);
+
 }
 
 int luaopen_hydra_ipc(lua_State* L) {
