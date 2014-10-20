@@ -1,12 +1,11 @@
 package = "mjolnir.screen"
 version = "0.2-1"
-local url = "github.com/sdegutis/mjolnir-modules"
 local desc = "Mjolnir module to inspect and manipulate screens (i.e. monitors)."
-source = {url = "git://" .. url}
+source = {url = "https://github.com/sdegutis/mjolnir" }
 description = {
   summary = desc,
   detailed = desc,
-  homepage = "https://" .. url,
+  homepage = "https://github.com/sdegutis/mjolnir/tree/master/mods/screen",
   license = "MIT",
 }
 supported_platforms = {"macosx"}

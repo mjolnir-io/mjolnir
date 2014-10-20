@@ -1,12 +1,11 @@
 package = "mjolnir.alert"
 version = "0.2-1"
-local url = "github.com/sdegutis/mjolnir-modules"
 local desc = "Mjolnir module to show brief messages on-screen."
-source = {url = "git://" .. url}
+source = {url = "https://github.com/sdegutis/mjolnir" }
 description = {
   summary = desc,
   detailed = desc,
-  homepage = "https://" .. url,
+  homepage = "https://github.com/sdegutis/mjolnir/tree/master/mods/alert",
   license = "MIT",
 }
 supported_platforms = {"macosx"}

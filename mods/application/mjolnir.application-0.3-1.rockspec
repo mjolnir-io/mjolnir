@@ -1,12 +1,11 @@
 package = "mjolnir.application"
 version = "0.3-1"
-local url = "github.com/sdegutis/mjolnir-modules"
 local desc = "Mjolnir module to inspect and manipulate running applications and their windows."
-source = {url = "git://" .. url}
+source = {url = "https://github.com/sdegutis/mjolnir" }
 description = {
   summary = desc,
   detailed = desc,
-  homepage = "https://" .. url,
+  homepage = "https://github.com/sdegutis/mjolnir/tree/master/mods/application",
   license = "MIT",
 }
 supported_platforms = {"macosx"}

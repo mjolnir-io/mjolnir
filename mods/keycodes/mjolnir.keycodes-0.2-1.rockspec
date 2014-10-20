@@ -1,12 +1,11 @@
 package = "mjolnir.keycodes"
 version = "0.2-1"
-local url = "github.com/sdegutis/mjolnir-modules"
 local desc = "Mjolnir module to convert between key-strings and key-codes."
-source = {url = "git://" .. url}
+source = {url = "https://github.com/sdegutis/mjolnir" }
 description = {
   summary = desc,
   detailed = desc,
-  homepage = "https://" .. url,
+  homepage = "https://github.com/sdegutis/mjolnir/tree/master/mods/keycodes",
   license = "MIT",
 }
 supported_platforms = {"macosx"}

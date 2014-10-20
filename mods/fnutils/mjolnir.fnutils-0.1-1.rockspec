@@ -1,12 +1,11 @@
 package = "mjolnir.fnutils"
 version = "0.1-1"
-local url = "github.com/sdegutis/mjolnir-modules"
 local desc = "Mjolnir module to help with functional programming."
-source = {url = "git://" .. url}
+source = {url = "https://github.com/sdegutis/mjolnir" }
 description = {
   summary = desc,
   detailed = desc,
-  homepage = "https://" .. url,
+  homepage = "https://github.com/sdegutis/mjolnir/tree/master/mods/fnutils",
   license = "MIT",
 }
 supported_platforms = {"macosx"}

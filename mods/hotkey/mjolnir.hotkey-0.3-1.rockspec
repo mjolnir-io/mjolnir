@@ -1,12 +1,11 @@
 package = "mjolnir.hotkey"
 version = "0.3-1"
-local url = "github.com/sdegutis/mjolnir-modules"
 local desc = "Mjolnir module to create and manage global hotkeys."
-source = {url = "git://" .. url}
+source = {url = "https://github.com/sdegutis/mjolnir" }
 description = {
   summary = desc,
   detailed = desc,
-  homepage = "https://" .. url,
+  homepage = "https://github.com/sdegutis/mjolnir/tree/master/mods/hotkey",
   license = "MIT",
 }
 supported_platforms = {"macosx"}
