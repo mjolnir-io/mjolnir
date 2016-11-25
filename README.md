@@ -77,6 +77,7 @@ If for any reason you want to undo everything in the above steps, do:
 $ luarocks purge --tree=/usr/local
 $ brew uninstall lua luarocks
 $ rm ~/.luarocks/config.lua
+$ rm ~/.mjolnir/init.lua
 ~~~
 
 ## Installing to $HOME
